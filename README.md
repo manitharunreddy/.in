@@ -2,7 +2,10 @@
 
 > Production portfolio website for **Manitharun Reddy Thallapureddy**, Full-Stack Software Engineer specializing in offline-first POS systems, multi-tenant B2B architectures, real-time data sync, and enterprise web applications.
 
-Live Domain: [https://manitharunreddy.in](https://manitharunreddy.in)
+## 🌐 Live URLs
+
+- **Custom Domain:** [https://manitharunreddy.in](https://manitharunreddy.in)
+- **GitHub Pages URL:** [https://manitharunreddy.github.io/.in/](https://manitharunreddy.github.io/.in/)
 
 ---
 
@@ -70,6 +73,16 @@ npm run preview
 ```
 
 The production output is placed into the `dist/` directory, ready for deployment to any static hosting service.
+
+---
+
+## 🚀 GitHub Actions Deployment
+
+The automated deployment pipeline is configured in [`.github/workflows/deployment.yml`](.github/workflows/deployment.yml). On every push to `main`, GitHub Actions automatically installs dependencies, executes the production build, and deploys the site to GitHub Pages.
+
+Upon successful deployment, the site is accessible at:
+- **Primary Domain:** [https://manitharunreddy.in](https://manitharunreddy.in)
+- **GitHub Pages Default URL:** [https://manitharunreddy.github.io/.in/](https://manitharunreddy.github.io/.in/)
 
 ---
 
