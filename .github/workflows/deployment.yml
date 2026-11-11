@@ -1,0 +1,99 @@
+# GitHub Actions workflow to build and deploy the React application to GitHub Pages.
+
+# Name displayed in the GitHub Actions tab.
+name: Deploy React App to GitHub Pages
+
+# Defines the events that trigger this workflow.
+on:
+  # Automatically run the workflow whenever code is pushed to the main branch.
+  push:
+    branches:
+      - main
+
+  # Allows the workflow to be started manually from the Actions tab.
+  workflow_dispatch:
+
+# Defines the permissions required by the workflow.
+permissions:
+  # Allows the workflow to read repository contents.
+  contents: read
+
+  # Allows the workflow to publish the website to GitHub Pages.
+  pages: write
+
+  # Allows the workflow to request an identity token for deployment.
+  id-token: write
+
+# Controls how multiple workflow runs are handled.
+concurrency:
+  # Groups all GitHub Pages deployment runs together.
+  group: pages
+
+  # Cancels an older running workflow when a newer run starts.
+  cancel-in-progress: true
+
+# Defines the jobs that build and deploy the React application.
+jobs:
+  # Job 1: Install dependencies and generate production-ready files.
+  build:
+    # Runs this job on a GitHub-hosted Ubuntu virtual machine.
+    runs-on: ubuntu-latest
+
+    # Defines the steps executed sequentially during the build.
+    steps:
+      # Downloads the repository code into the GitHub Actions runner.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Installs Node.js so npm commands can be executed.
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          # Uses Node.js 22 for the React build.
+          node-version: 22
+
+          # Enables npm dependency caching to speed up future builds.
+          cache: npm
+
+      # Installs the exact dependency versions recorded in package-lock.json.
+      - name: Install dependencies
+        run: npm ci
+
+      # Runs TypeScript checks and creates optimized production files in dist/.
+      - name: Build React project
+        run: npm run build
+
+      # Configures the GitHub Pages deployment environment.
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      # Packages the generated dist/ directory for the deployment job.
+      - name: Upload production files
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Specifies the directory containing the built website.
+          path: ./dist
+
+  # Job 2: Publish the generated website to GitHub Pages.
+  deploy:
+    # Associates this job with the GitHub Pages deployment environment.
+    environment:
+      # Uses the GitHub Pages environment configured for this repository.
+      name: github-pages
+
+      # Displays the published website URL after deployment.
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Runs the deployment job on a GitHub-hosted Ubuntu virtual machine.
+    runs-on: ubuntu-latest
+
+    # Ensures deployment starts only after the build job succeeds.
+    needs: build
+
+    # Defines the steps required to publish the website.
+    steps:
+      # Publishes the uploaded production files to GitHub Pages.
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
