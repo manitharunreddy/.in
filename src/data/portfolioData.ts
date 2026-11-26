@@ -162,7 +162,7 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
 export const EXPERIENCE: ExperienceItem = {
   company: "Young Minds Technology Solutions Pvt. Ltd.",
   role: "Full-Stack Web Developer",
-  location: "Hyderabad, India",
+  location: "Tirupati, India",
   period: "27 October 2022 – 2 November 2026",
   summary: "Engineered and maintained mission-critical enterprise web applications, offline-first POS systems, multi-tenant B2B platforms, government procurement systems, and desktop hardware bridges over 4 years.",
   bulletPoints: [
